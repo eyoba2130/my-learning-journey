@@ -4,8 +4,7 @@
   "express":"^5.2.1",
   "mysql2":"^3.24.2"},
   "scripts": {
-    "dev":"nodemon server.js",
-    "start":"nodemon index.js"
-
+    "dev":"nodemon server.js"
+    
   }
 }
