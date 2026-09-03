@@ -5,12 +5,13 @@ import db from "./db/db.config.js";
 
 const app = express();
 
-async function startSever () {
+async function startServer () {
     try {
 
 
-        const connection = await db.authenticate();
-        console.log("Database connected successfully");
+      const connection = await db.getConnection();
+      connection.release();
+
         app.listen(3000, () => {
           if (err) {
             throw (err);
@@ -20,8 +21,8 @@ async function startSever () {
       
 })
     } catch (error) {
-        console.log("Eroo server starting", error.message);
+        console.log("Error server starting", error.message);
     }
 }
-startSever();
+startServer();
 
