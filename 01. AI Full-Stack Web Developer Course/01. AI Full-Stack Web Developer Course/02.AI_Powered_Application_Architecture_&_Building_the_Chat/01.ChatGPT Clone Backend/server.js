@@ -1,9 +1,16 @@
 
-
 import express from "express";
 import db from "./db/db.config.js";
 
 const app = express();
+app.post("/api/conversations", async (req, res) => {
+  res.send("post method is working");
+});
+
+app.get("/api/conversations", async (req, res) => {
+res.send("get method is working");
+});
+
 
 async function startServer () {
     try {
@@ -25,4 +32,3 @@ async function startServer () {
     }
 }
 startServer();
-
