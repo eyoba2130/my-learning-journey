@@ -1,4 +1,4 @@
-export function errorHandler(err, req, res, next) {
+export const errorHandler = (err, req, res, next) => {
     // let customError = {
     //     statusCode: err.statusCode || Statuscodes.INTERNAL_SERVER_ERROR,
     //     message: err.message || 'Internal Server Error',

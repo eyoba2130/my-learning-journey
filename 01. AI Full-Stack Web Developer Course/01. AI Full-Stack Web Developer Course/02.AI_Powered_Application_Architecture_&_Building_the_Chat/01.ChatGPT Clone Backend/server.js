@@ -2,7 +2,7 @@
 import express from "express";
 import db from "./db/db.config.js";
 import mainRouter from "./src/api/main.routes.js"
-import errorHandler from "./src/middleware/errorHandler.js";
+import {errorHandler} from "./src/middleware/error.handler.js";
 const app = express();
 
 //middleware required to parse the incoming request body as JSON
