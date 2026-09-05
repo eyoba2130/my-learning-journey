@@ -4,15 +4,8 @@ import db from "./db/db.config.js";
 import mainRouter from "./src/api/main.routes.js"
 const app = express();
 
+//api
 app.use('/api', mainRouter)
-
-// app.post("/api/conversations", async (req, res) => {
-//   res.send("post method is working");
-// });
-
-// app.get("/api/conversations", async (req, res) => {
-// res.send("get method is working");
-// });
 
 
 async function startServer() {
@@ -22,7 +15,7 @@ async function startServer() {
       const connection = await db.getConnection();
 
       console.log("db connected")
-      // connection.release();
+      connection.release();
 
         app.listen(3000, () => {
        

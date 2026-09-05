@@ -11,9 +11,7 @@ const db = await mysql.createPool({
   database: process.env.DB_NAME,
   connectionLimit: 10,
   
-}
-  
-);
+});
 
 
 export default db;

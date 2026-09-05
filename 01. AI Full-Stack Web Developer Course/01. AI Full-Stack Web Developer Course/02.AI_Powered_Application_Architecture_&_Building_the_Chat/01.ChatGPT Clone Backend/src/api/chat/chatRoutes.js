@@ -1,14 +1,12 @@
 import express from "express";
-
+import {createConversationController, getConversationController} from "./controller/chatController.js";
 
 const chatRouter = express.Router();
 
-chatRouter.post('/conversation', (req, res) => {
-    res.send("post method is working");
-})
+//api/chat/conversation
+chatRouter.post('/conversation', createConversationController);
+chatRouter.get('/conversation', getConversationController);
 
-chatRouter.get('/conversation', (req, res) => {
-    res.send("get method is working");
-})
+
 
 export default chatRouter;
