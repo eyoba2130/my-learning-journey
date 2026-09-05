@@ -4,6 +4,8 @@ import db from "./db/db.config.js";
 import mainRouter from "./src/api/main.routes.js"
 const app = express();
 
+app.use(express.json());
+
 //api
 app.use('/api', mainRouter)
 
