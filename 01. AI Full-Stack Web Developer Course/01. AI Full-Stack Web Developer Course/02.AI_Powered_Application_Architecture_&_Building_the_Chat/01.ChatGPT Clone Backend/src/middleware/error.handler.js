@@ -1,12 +1,9 @@
 export const errorHandler = (err, req, res, next) => {
-    // let customError = {
-    //     statusCode: err.statusCode || Statuscodes.INTERNAL_SERVER_ERROR,
-    //     message: err.message || 'Internal Server Error',
-    // };
-
-    return res.status(500).json({
+    
+    console.error("error in request ", err.message);
+    return res.status(err.status || 500).json({
         status: 'false',
         
-        message: "something went wrong",
+        message: err.message || "something went wrong",
     })
 };

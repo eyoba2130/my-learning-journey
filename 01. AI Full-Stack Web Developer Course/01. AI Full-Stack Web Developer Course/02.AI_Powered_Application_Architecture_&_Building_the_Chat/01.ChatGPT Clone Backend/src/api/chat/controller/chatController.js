@@ -1,18 +1,24 @@
-
+import { createConversationService } from '../service/chat.service.js';
 export async function createConversationController(req, res) {
-    console.log(req.body); // Access the request body
     
     try {
-        console.log(req.body); // Log the request body to the console
+        const { question } = req.body;
+       const result = await createConversationService({ question });
+        res.status(201).send({
+            success: true,
+            message: 'Conversation created successfully',
+            data: result,
+
+       });
     } catch (error) {
-        throw error; // Pass the error to the error handler middleware 
+        throw error; // Pass the error to the error handler middleware
     }
 }
 
-export async function getConversationController(req, res) {
+ export async function getConversationController(req, res) {
     try {
-        console.log(req.body); // Log the request body to the console
+        res.send({ message: 'Get conversation controller' });
     } catch (error) {
-        throw error; // Pass the error to the error handler middleware 
+        throw error; // Pass the error to the error handler middleware
     }
 }

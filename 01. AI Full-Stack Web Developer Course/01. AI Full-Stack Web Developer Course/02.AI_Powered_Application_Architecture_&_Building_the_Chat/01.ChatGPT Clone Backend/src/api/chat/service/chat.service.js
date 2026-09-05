@@ -1,4 +1,4 @@
-export async function createConversationService(question ) {
+export async function createConversationService({question} ) {
     // Implementation for creating a conversation
     try {
         //validation logic for question
@@ -8,9 +8,9 @@ export async function createConversationService(question ) {
             throw error;
         }
  
-        return ({ 'Conversation created successfully': question });
+    return `Conversation created successfully: ${question}`;
+
     } catch (error) {
-        throw error; 
+        throw error;
     }
 }
-
