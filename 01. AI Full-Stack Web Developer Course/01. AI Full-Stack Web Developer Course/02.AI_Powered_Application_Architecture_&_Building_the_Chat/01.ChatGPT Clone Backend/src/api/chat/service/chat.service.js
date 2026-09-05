@@ -1,4 +1,5 @@
-export async function createConversationService({question} ) {
+import db from '../../../../db/db.config.js';
+export async function createConversationService({ question }) {
     // Implementation for creating a conversation
     try {
         //validation logic for question
@@ -7,7 +8,9 @@ export async function createConversationService({question} ) {
             error.status = 400;
             throw error;
         }
- 
+        //save to db
+       await db.execute('INSERT INTO conversations (content) VALUES (?)', [question]);
+        
     return `Conversation created successfully: ${question}`;
 
     } catch (error) {
