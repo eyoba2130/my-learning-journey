@@ -21,10 +21,16 @@ export async function createConversationService({ question }) {
         
         // await db.execute('INSERT INTO chatgpt_clone.conversations (content) VALUES (?)', [question])  
 
-
+      //get recent 5 conversations from db
         const historyRows = await getConversationRows(5);
-    // return `Conversation created successfully: ${question}`;
-
+        // return `Conversation created successfully: ${question}`;
+        
+        //insert new conversation into db
+        const [result] = await db.execute('INSERT INTO conversations (role, content) VALUES (?, ?)', ['user', question]);
+        
+        return {
+            history: historyRows,
+        };
     } catch (error) {
         throw error;
     }
