@@ -5,3 +5,5 @@ CREATE TABLE IF NOT EXISTS conversations (
     token_count INT unsigned NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+conversations
