@@ -1,11 +1,16 @@
 
 import express from "express";
+import cors from 'cors';
 import db from "./db/db.config.js";
 import mainRouter from "./src/api/main.routes.js"
 import {errorHandler} from "./src/middleware/error.handler.js";
 const app = express();
 
 //middleware required to parse the incoming request body as JSON
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 //api
 app.use('/api', mainRouter)
