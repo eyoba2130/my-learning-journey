@@ -1,9 +1,10 @@
 import db from '../../../../db/db.config.js';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash-lite';
+import { GoogleGenAI } from '@google/genai';
 
-const geminiClient = new GoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY, model: GEMINI_MODEL });
-const getConversationRows = async (limit = 5) => {
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+export const getRecentConversationRows = async (limit = 5) => {
     const normaliedLimit = parseInt(limit, 10);
     const safeLimit = Number.isNaN(normaliedLimit) || normaliedLimit <= 0 ? 20 : normaliedLimit;
     const [rows] = await db.execute(`SELECT id, role, content, created_at FROM conversations ORDER BY id DESC LIMIT ${safeLimit}`);
@@ -11,48 +12,70 @@ const getConversationRows = async (limit = 5) => {
     return rows.reverse();
 };
 
-const generateAssistantAnswer = async ({
-    historyRows, question }) => {
-
-    const formattedHistory = historyRows.map(row => ({
+const generateAssistantAnswer = async ({ historyRows, question }) => {
+    const contents = historyRows.map(row => ({
         role: row.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: row.content }],
-    }))
-    
-    const chat = geminiClient.chats.create({
+    }));
+
+    contents.push({
+        role: 'user',
+        parts: [{ text: question }],
+    });
+
+    const response = await ai.models.generateContent({
         model: GEMINI_MODEL,
-        history: formattedHistory,
-    })
-    const result = await chat.sendMessage({ message: question });
-    return result.content;
+        contents: contents,
+    });
+
+    return {
+        text: response.text,
+        totalTokens: response.usageMetadata?.totalTokenCount || 0
+    };
 };
 
-
-
+const getMessageById = async messageId => {
+    const [rows] = await db.execute(
+        'SELECT id, role, content, token_count, created_at FROM conversations WHERE id = ? LIMIT 1', 
+        [messageId]
+    );
+    if (!rows[0]) return null;
+    return {
+        id: rows[0].id,
+        role: rows[0].role,
+        content: rows[0].content,
+        tokenCount: Number(rows[0].token_count || 0),
+        createdAt: rows[0].created_at,
+    };
+};
 
 export async function createConversationService({ question }) {
-    // Implementation for creating a conversation
     try {
-        //validation logic for question
-        if(!question.trim()) {
+        if (!question || !question.trim()) {
             const error = new Error('Question is required');
             error.status = 400;
             throw error;
         }
-        //save to db
-    //    await db.execute('INSERT INTO conversations (content) VALUES (?)', [question, ]);
-        
-        // await db.execute('INSERT INTO chatgpt_clone.conversations (content) VALUES (?)', [question])  
 
-      //get recent 5 conversations from db
-        const historyRows = await getConversationRows(5);
-        // return `Conversation created successfully: ${question}`;
-        
-        //insert new conversation into db
-        const [result] = await db.execute('INSERT INTO conversations (role, content) VALUES (?, ?)', ['user', question]);
-        
+       const historyRows = await getRecentConversationRows(5);
+        const [result] = await db.execute(
+            'INSERT INTO conversations (role, content) VALUES (?, ?)', 
+            ['user', question]
+        );
+
+        const assistantAnswer = await generateAssistantAnswer({ historyRows, question });
+
+        const [assistantResult] = await db.execute(
+            'INSERT INTO conversations (role, content, token_count) VALUES (?, ?, ?)', 
+            ['assistant', assistantAnswer.text, assistantAnswer.totalTokens]
+        );
+
+        const userConversation = await getMessageById(result.insertId);
+        const assistantConversation = await getMessageById(assistantResult.insertId);
+
         return {
-            history: historyRows,
+            userConversation,
+            assistantConversation,
         };
     } catch (error) {
         throw error;
