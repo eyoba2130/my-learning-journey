@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Sidebar from './components/Sidebar/Sidebar';
 import ChatHeader from './components/ChatHeader/ChatHeader';
 import MessageList from './components/MessageList/MessageList';
@@ -81,9 +81,12 @@ function App() {
 
   return (
     <div className='app'>
+      {/* sidebar */}
       <Sidebar />
 
+      
       <main className='chat'>
+      
         <ChatHeader />
 
         <MessageList

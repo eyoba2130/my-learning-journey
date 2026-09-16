@@ -9,7 +9,7 @@ export default function ChatHeader() {
         <ChevronDown size={16} />
       </div>
       <div className={styles.right}>
-        <div className={styles.avatar}>IT</div>
+        <div className={styles.avatar}>ET</div>
       </div>
     </header>
   );
