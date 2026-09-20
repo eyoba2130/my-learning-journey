@@ -13,7 +13,7 @@ async function generateEmbedding() {
     try {
         const result = await ai.models.embedContent({
             model: GEMINI_EMBEDDING_MODEL,
-            content: text,
+            contents: text,
             config: {
                 outputDimensionality: 768,
             },
@@ -78,4 +78,47 @@ function cosineSimilarity(vecA, vecB) {
     const vector1 = [1, 2];
     const vector2 = [2, 4]
 
-cosineSimilarity(vector1, vector2);
+// cosineSimilarity(vector1, vector2);
+console.log(cosineSimilarity(vector1, vector2));
+
+
+async function compareText() {
+    const text1 = 'what is html in web development?';
+    const text2 = 'what is  hyper text markup language?';
+    const text3 = 'Nirobi the capital of kenya.';
+const result1 = await ai.models.embedContent({
+            model: GEMINI_EMBEDDING_MODEL,
+            contents: text1,
+            config: {
+                taskType: "SEMANTIC_SIMILARITY",
+            },
+        })
+
+    const result2 = await ai.models.embedContent({
+            model: GEMINI_EMBEDDING_MODEL,
+        contents: text2,
+        config: {
+                taskType: "SEMANTIC_SIMILARITY",
+            },
+            
+           
+        })
+const result3 = await ai.models.embedContent({
+            model: GEMINI_EMBEDDING_MODEL,
+            contents: text3,
+           config: {
+                taskType: "SEMANTIC_SIMILARITY",
+            },
+        })
+    const v1 = result1.embeddings[0].values;
+    const v2 = result2.embeddings[0].values;
+    const v3 = result3.embeddings[0].values;
+
+
+    const v1Andv2 = cosineSimilarity(v1, v2);
+    console.log('v1Andv2', v1Andv2)
+
+   const v1Andv3 = cosineSimilarity(v1, v3);
+    console.log('v1Andv3', v1Andv3)    
+};
+compareText();
