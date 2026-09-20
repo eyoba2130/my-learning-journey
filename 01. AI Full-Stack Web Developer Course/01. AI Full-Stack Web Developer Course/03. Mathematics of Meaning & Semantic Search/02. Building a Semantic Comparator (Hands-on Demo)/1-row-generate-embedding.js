@@ -19,10 +19,42 @@ async function generateEmbedding() {
                 outputDimensionality: 768,
             },
         })
-        console.log(result.embeddings[0].values);
+        console.log(result.embeddings[0].values.splice(0,5));
     } catch (error) {
         console.log(`Error generating embedding`, error);
     }
 }
 
 generateEmbedding()
+
+
+// (A dot B) / (||A|| * ||B||)
+function cosineSimilarity(vecA, vecB) {
+     
+    if (vecA.length != vecB.length) {
+        throw new error('vectors must have the same length');
+    
+    }
+// dot product 
+    let dotProduct = 0;
+    for (let i = 0; i < vecA.length; i++){
+        dotProduct += vecA[i] * vecB[i];
+    }
+
+    //magnitude 
+    let magnitudeA = 0;
+    let magnitudeB = 0;
+    for (let i = 0; i < vecA.length; i++){
+        magnitudeA += vecA[i] * vecA[i];
+    }
+    magnitudeA = Math.sqrt(magnitudeA);
+     for (let i = 0; i < vecA.length; i++){
+        magnitudeB += vecA[i] * vecA[i];
+    }
+    magnitudeB = Math.sqrt(magnitudeB);
+
+}
+
+  //Example 
+    const vector1 = [1, 2];
+    const vector2 = [2, 4]
