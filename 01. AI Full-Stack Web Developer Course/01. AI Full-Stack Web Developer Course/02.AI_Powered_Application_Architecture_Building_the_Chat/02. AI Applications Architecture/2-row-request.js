@@ -35,7 +35,7 @@ async function testChatHistory() {
   console.log('user', 'hello, may name is Eyu'); 
   console.log('AI', response.text);
     
-  
+
 const history = await chat.getHistory();
 console.log('History:', history);
 console.log('Second message parts:', history[1].parts);
