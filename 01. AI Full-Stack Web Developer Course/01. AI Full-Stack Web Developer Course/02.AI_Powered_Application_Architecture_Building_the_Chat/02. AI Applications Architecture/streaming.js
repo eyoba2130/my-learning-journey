@@ -14,7 +14,7 @@ async function run() {
       
   })
   const stream = await chat.sendMessageStream({
-    message:'Explain why use arrow function in javascript?'
+    message:'Explain why use JDBC in java?'
   })
   // console.log(stream);
   for await (const chunk of stream) {
