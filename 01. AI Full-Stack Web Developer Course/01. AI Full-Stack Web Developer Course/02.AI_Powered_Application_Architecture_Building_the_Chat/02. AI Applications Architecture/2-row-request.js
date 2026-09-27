@@ -54,7 +54,7 @@ async function testChatHistory2() {
   const response = await chat.sendMessage({
     message: 'hello. my name is eyu',
   })
-  console.log('user', 'hello, may name is Eyu'); 
+  // console.log('user', 'hello, may name is Eyu'); 
   console.log('AI', response.text);
     //   console.log(chat.getHistory);
     
