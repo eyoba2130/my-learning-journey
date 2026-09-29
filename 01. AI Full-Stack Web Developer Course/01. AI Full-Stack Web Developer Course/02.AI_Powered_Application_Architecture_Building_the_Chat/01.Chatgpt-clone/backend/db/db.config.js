@@ -13,5 +13,5 @@ const db = await mysql.createPool({
   
 });
 
-
 export default db;
+
