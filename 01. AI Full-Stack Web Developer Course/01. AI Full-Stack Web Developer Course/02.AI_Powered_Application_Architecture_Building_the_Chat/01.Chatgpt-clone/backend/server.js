@@ -8,7 +8,7 @@ const app = express();
 
 //middleware required to parse the incoming request body as JSON
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
 app.use(express.json());
