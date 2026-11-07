@@ -58,7 +58,7 @@ async function testChatHistory2() {
   console.log('AI', response.text);
     //   console.log(chat.getHistory);
     
-    const history = chat.getHistory;
+  const history = chat.getHistory;
   console.log(history);
   // console.log(history[1].parts);
 }

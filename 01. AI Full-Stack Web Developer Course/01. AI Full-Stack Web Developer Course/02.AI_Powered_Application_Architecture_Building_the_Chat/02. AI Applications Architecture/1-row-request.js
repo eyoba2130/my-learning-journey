@@ -11,7 +11,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 async function run() {
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.1-flash-lite',
+    model: 'gemini-3.5-flash-lite',
     contents: 'why is the sky blue?',
 
 });
@@ -21,7 +21,7 @@ async function run() {
 run();
 async function createChat() {
   const chat = ai.chats.create({
-    model: 'gemini_3.1_flash_lite',
+    model: "gemini-3.5-flash-lite"
   })
   const response = await chat.sendMessage({
     message: 'hello. my name is eyu',
